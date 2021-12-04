@@ -5,9 +5,10 @@ import datetime
 from requests.exceptions import HTTPError
 
 reply = 'success'
-search = r'\"([A-z0-9+]*)\"'
 
 try:
+    search = r'\"([A-z0-9+]*)\"'
+
     r = requests.get('https://tryhackme.com/badge/770900')
     match = re.search(search, r.text)
 
@@ -15,15 +16,27 @@ try:
     decode = base64.b64decode(match.group(1))
     decoded = str(decode, 'UTF-8')
 
-    css_search = r'([\w\W]*)'
-    css_search += r'<style scoped>([\w\W]*)<\/style>'
-    css_search += r'([\w\W]*)<!--'
+    with open('output.txt', 'w') as f:
+        f.write(decoded)
+
+    css_search = r'([\w\W]*)'  # 1
+    css_search += r'<style scoped>([\w\W]*)<\/style>'  # 2
+    css_search += r'([\w\W]*)<!--'  # 3
 
     css_match = re.search(css_search, decoded)
 
     with open('index.html', 'w') as f:
+        avatar_search = r'url\(([\w\W]*png)\)'
         css_link = '<link rel="stylesheet" href="thm.css">'
-        f.write(f'{css_link}\n{css_match.group(1)}{css_match.group(3)}')
+
+        html_group1 = re.sub(
+            avatar_search, 'url(/avatar.png)', css_match.group(1)).replace(
+                'https://tryhackme.com/img', '')
+
+        html_group2 = css_match.group(3).replace(
+            'https://tryhackme.com/img/badges', '')
+
+        f.write(f'{css_link}\n{html_group1}{html_group2}')
 
     with open('thm.css', 'w') as f:
         f.write(css_match.group(2))
