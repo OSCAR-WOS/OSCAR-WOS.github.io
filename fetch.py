@@ -12,6 +12,9 @@ try:
     r = requests.get('https://tryhackme.com/badge/770900')
     match = re.search(search, r.text)
 
+    if match is None:
+        exit()
+
     # str(base64.b64decode(match.group(1)), 'UTF-8')
     decode = base64.b64decode(match.group(1))
     decoded = str(decode, 'UTF-8')
