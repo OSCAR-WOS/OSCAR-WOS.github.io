@@ -31,10 +31,10 @@ try:
 
         html_group1 = re.sub(
             avatar_search, 'url(/avatar.png)', css_match.group(1)).replace(
-                'https://tryhackme.com/img', '')
+                'https://tryhackme.com/img/', '/')
 
         html_group2 = css_match.group(3).replace(
-            'https://tryhackme.com/img/badges', '')
+            'https://tryhackme.com/img/badges/', '/')
 
         f.write(f'{css_link}\n{html_group1}{html_group2}')
 
@@ -47,8 +47,6 @@ except Exception as err:
     reply = f'Other error {err}'
 else:
     reply = 'unknown'
-
-
 
 with open('/tmp/fetch.txt', 'a') as f:
     time = datetime.datetime.now()
