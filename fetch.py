@@ -2,7 +2,12 @@ import re
 import base64
 import requests
 import datetime
+import asyncio
+from screenshot import screenshot
 from requests.exceptions import HTTPError
+
+url_github = 'https://oscar-wos.github.io'
+url_thm = 'https://tryhackme.com/badge/770900'
 
 
 def main():
@@ -11,7 +16,7 @@ def main():
     try:
         search = r'\"([A-z0-9+]*)\"'
 
-        r = requests.get('https://tryhackme.com/badge/770900')
+        r = requests.get(url_thm)
         match = re.search(search, r.text)
 
         if match is None:
@@ -60,6 +65,8 @@ def main():
     with open('/tmp/fetch.txt', 'a') as f:
         time = datetime.datetime.now()
         f.write(f'{time}:{reply}\n')
+
+        asyncio.get_event_loop().run_until_complete(screenshot(url_github))
 
 
 if __name__ == "__main__":
