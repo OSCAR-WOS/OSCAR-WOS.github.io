@@ -50,4 +50,4 @@ else:
 
 with open('/tmp/fetch.txt', 'a') as f:
     time = datetime.datetime.now()
-    f.write(f'{time}:{reply}')
+    f.write(f'{time}:{reply}\n')
