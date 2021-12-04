@@ -1,0 +1,10 @@
+{
+  "path": "fetch.png",
+  "omitBackground": true,
+  "clip": {
+    "x": 0,
+    "width": 300,
+    "y": 0,
+    "height": 200
+  }
+}
