@@ -48,7 +48,8 @@ except Exception as err:
 else:
     reply = 'unknown'
 
-time = datetime.datetime.now()
+
 
 with open('/tmp/fetch.txt', 'a') as f:
+    time = datetime.datetime.now()
     f.write(f'{time}:{reply}')
