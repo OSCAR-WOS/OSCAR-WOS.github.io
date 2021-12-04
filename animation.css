@@ -1,0 +1,17 @@
+.level-8::after {
+    content: '[0x8][HACKER]';
+    animation: animate-hacker 4s infinite;
+}
+
+.level-8 {
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: bold;
+  text-shadow: #000 0 0 6px;
+}
+
+@keyframes animate-hacker {
+  50% {
+      content: '[0x8][H4CK3R]';
+  }
+}

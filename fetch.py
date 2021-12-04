@@ -3,10 +3,9 @@ import base64
 import requests
 import datetime
 from requests.exceptions import HTTPError
-from screenshot import screenshot
 
 
-async def main():
+def main():
     reply = 'success'
 
     try:
@@ -18,26 +17,33 @@ async def main():
         if match is None:
             exit()
 
-        # str(base64.b64decode(match.group(1)), 'UTF-8')
         decode = base64.b64decode(match.group(1))
         decoded = str(decode, 'UTF-8')
 
-        css_search = r'([\w\W]*)'  # 1
-        css_search += r'<style scoped>([\w\W]*)<\/style>'  # 2
-        css_search += r'([\w\W]*)<!--'  # 3
+        css_search = r'([\w\W]*)'
+        css_search += r'<style scoped>([\w\W]*)<\/style>'
+        css_search += r'([\w\W]*)<!--'
 
         css_match = re.search(css_search, decoded)
 
         with open('index.html', 'w') as f:
             avatar_search = r'url\(([\w\W]*png)\)'
-            css_link = '<link rel="stylesheet" href="thm.css">'
+            css_search = r'<span class="thm_rank">[\w\[\]]+<\/span>'
+
+            css_link = '<link rel="stylesheet" href="thm.css">\n'
+            css_link += '<link rel="stylesheet" href="animation.css">'
+
+            url_replace = 'url(/img/avatar.png)'
 
             html_group1 = re.sub(
-                avatar_search, 'url(/avatar.png)', css_match.group(1)).replace(
-                    'https://tryhackme.com/img/', '/')
+                avatar_search, url_replace, css_match.group(1)).replace(
+                    'https://tryhackme.com/', '/')
 
-            html_group2 = css_match.group(3).replace(
-                'https://tryhackme.com/img/badges/', '/')
+            css_replace = '<span class="level-8"></span>'
+
+            html_group2 = re.sub(
+                css_search, css_replace, css_match.group(3)).replace(
+                    'https://tryhackme.com/', '/')
 
             f.write(f'{css_link}\n{html_group1}{html_group2}')
 
@@ -54,8 +60,6 @@ async def main():
     with open('/tmp/fetch.txt', 'a') as f:
         time = datetime.datetime.now()
         f.write(f'{time}:{reply}\n')
-
-        await screenshot()
 
 
 if __name__ == "__main__":
