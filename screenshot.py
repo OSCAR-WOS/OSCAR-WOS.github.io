@@ -12,10 +12,10 @@ async def screenshot(url=None):
     page = await browser.newPage()
     await page.goto(url)
 
-    for i in range(30):
+    for i in range(100):
         data['path'] = f'screenshots/{i}.png'
         await page.screenshot(data)
         trim_image(f'screenshots/{i}.png', f'screenshots_trimmed/{i}.png')
-        time.sleep(0.3)
+        time.sleep(0.1)
 
     await browser.close()
