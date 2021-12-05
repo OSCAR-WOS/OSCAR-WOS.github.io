@@ -44,6 +44,9 @@ def main():
                 avatar_search, url_replace, css_match.group(1)).replace(
                     'https://tryhackme.com/', '/')
 
+            html_group1 = html_group1.replace(
+                '/p/OscarWosSzlaga', 'https://tryhackme.com/p/OscarWosSzlaga')
+
             css_replace = '<span class="level-8"></span>'
 
             html_group2 = re.sub(
