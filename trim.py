@@ -26,12 +26,41 @@ def make_gif(frame_folder="screenshots_trimmed"):
               for image in glob.glob(f'{frame_folder}/*.png')]
     frame_one = frames[0]
     frame_one.save('fetch.gif', format="GIF", append_images=frames,
-                   save_all=True, duration=100, loop=0)
+                   save_all=True, duration=100, loop=0, optimize=False)
 
 
-def make_gif_new():
+def make_gif_new(frame_folder="screenshots_trimmed"):
     images = []
-    for image in glob.glob('screenshots_trimmed/*.png'):
+    for image in glob.glob(f'{frame_folder}/*.png'):
         images.append(imageio.imread(image))
 
     imageio.mimsave('fetch_new.gif', images)
+
+
+def make_gif_new_new(frame_folder="screenshots_trimmed"):
+    frames = []
+
+    for image in glob.glob(f'{frame_folder}/*.png'):
+        frames.append(gen_frame(image))
+
+    frame_one = frames[0]
+    frame_one.save('fetch_new_new.gif', append_images=frames,
+                   save_all=True, duration=100, loop=0, optimize=False)
+
+
+def gen_frame(path):
+    im = Image.open(path)
+    alpha = im.getchannel('A')
+
+    im = im.convert('RGB').convert('P', palette=Image.ADAPTIVE, colors=255)
+
+    # Set all pixel values below 128 to 255 , and the rest to 0
+    mask = Image.eval(alpha, lambda a: 255 if a <= 128 else 0)
+
+    # Paste the color of index 255 and use alpha as a mask
+    im.paste(255, mask)
+
+    # The transparency index is 255
+    im.info['transparency'] = 255
+
+    return im

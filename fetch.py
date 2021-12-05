@@ -3,7 +3,7 @@ import base64
 import requests
 import datetime
 import asyncio
-from trim import make_gif
+from trim import make_gif, make_gif_new, make_gif_new_new
 from screenshot import screenshot
 from requests.exceptions import HTTPError
 
@@ -23,8 +23,7 @@ def main():
         if match is None:
             exit()
 
-        decode = base64.b64decode(match.group(1))
-        decoded = str(decode, 'UTF-8')
+        decoded = str(base64.b64decode(match.group(1)), 'UTF-8')
 
         css_search = r'([\w\W]*)'
         css_search += r'<style scoped>([\w\W]*)<\/style>'
@@ -69,6 +68,8 @@ def main():
 
         asyncio.get_event_loop().run_until_complete(screenshot(url_github))
         make_gif()
+        make_gif_new()
+        make_gif_new_new()
 
 
 if __name__ == "__main__":
