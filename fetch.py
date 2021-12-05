@@ -3,6 +3,7 @@ import base64
 import requests
 import datetime
 import asyncio
+from trim import make_gif
 from screenshot import screenshot
 from requests.exceptions import HTTPError
 
@@ -67,6 +68,7 @@ def main():
         f.write(f'{time}:{reply}\n')
 
         asyncio.get_event_loop().run_until_complete(screenshot(url_github))
+        make_gif()
 
 
 if __name__ == "__main__":
