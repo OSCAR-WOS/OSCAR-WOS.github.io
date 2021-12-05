@@ -1,6 +1,7 @@
 import numpy as np
 import glob
 from PIL import Image
+import imageio
 
 
 def trim_image(path="screenshots/0.png", out="screenshots/0_trim.png"):
@@ -26,3 +27,11 @@ def make_gif(frame_folder="screenshots_trimmed"):
     frame_one = frames[0]
     frame_one.save('fetch.gif', format="GIF", append_images=frames,
                    save_all=True, duration=100, loop=0)
+
+
+def make_gif_new():
+    images = []
+    for image in glob.glob('screenshots_trimmed/*.png'):
+        images.append(imageio.imread(image))
+
+    imageio.mimsave('fetch_new.gif', images)
